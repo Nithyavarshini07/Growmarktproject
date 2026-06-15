@@ -108,19 +108,49 @@ export interface SocialStatus {
 
 export const api = {
   auth: {
-    register: (body: { name: string; email: string; password: string }) =>
-      request<{
-        user: { id: string; name: string; email: string };
-        token: string;
-      }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
-    login: (body: { email: string; password: string }) =>
-      request<{
-        user: { id: string; name: string; email: string };
-        token: string;
-      }>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
-    profile: () =>
-      request<{ id: string; name: string; email: string }>("/auth/profile"),
-  },
+  register: (body: { name: string; email: string; password: string }) =>
+    request<{
+      user: { id: string; name: string; email: string };
+      token: string;
+    }>("/auth/register", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  login: (body: { email: string; password: string }) =>
+    request<{
+      user: { id: string; name: string; email: string };
+      token: string;
+    }>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  profile: () =>
+    request<{ id: string; name: string; email: string }>(
+      "/auth/profile"
+    ),
+
+  forgotPassword: (email: string) =>
+    request<{ message: string }>(
+      "/auth/forgot-password",
+      {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      }
+    ),
+    resetPassword: (body: {
+  password: string;
+  confirmPassword: string;
+}) =>
+  request<{ message: string }>(
+    "/auth/reset-password",
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    }
+  ),
+},
 
   content: {
     generate: (body: { prompt: string; platform: string; day: string }) =>
